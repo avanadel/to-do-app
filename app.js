@@ -1,59 +1,50 @@
+function onReady(){
+  let toDos = [];
 
-function onReady() {
   const ADD_TODO_FORM = document.getElementById('addToDoForm');
-  const toDos = [];
+  const NEW_TODO_TEXT = document.getElementById('newToDoText');
+  const TODO_LIST = document.getElementById('toDoList');
 
-  function renderTheUI() {
-    const TODO_LIST = document.getElementById('toDoList');
+  ADD_TODO_FORM.addEventListener('submit', (event) => {
+    event.preventDefault();
 
-    TODO_LIST.textContent = '';
+    let title = NEW_TODO_TEXT.value;
 
-    toDos.forEach(function(toDo){
-      const NEW_LI = document.createElement('li');
-      const CHECKBOX = document.createElement('input');
-      CHECKBOX.type = "checkbox";
+    toDos.push(title);
+    console.log(toDos);
 
-      let deleteBtn = document.createElement('button');
-      deleteBtn.textContent = "Delete";
+    let newLi = document.createElement('li'); // <li></li>
+    let checkbox = document.createElement('input');
+    checkbox.type = "checkbox";
 
-      deleteBtn.addEventListener('click', function(event){
+    let deleteBtn = document.createElement('button');
+    deleteBtn.textContent = "Delete";
 
+    deleteBtn.addEventListener('click', function(event){
+      let buttonLiText = this.parentElement.childNodes[0].textContent;
+      // console.log(event);
+      // this.parentElement represents the button's <li> parent
       TODO_LIST.removeChild(this.parentElement);
 
       toDos.forEach(function(currentToDo, index){
-        console.log(currentToDo, index);
-        console.log(this);
+        // console.log(currentToDo, index);
+        // console.log(this);
+
+        if(currentToDo === buttonLiText){
+          // remove from array
+          toDos.splice(index, 1);
+        }
+        console.log(toDos);
       });
     })
 
-      NEW_LI.textContent = toDo.title;
-
-      TODO_LIST.appendChild(NEW_LI);
-      NEW_LI.appendChild(CHECKBOX);
-    });
-  }
-
-  function createNewToDo() {
-    const NEW_TODO_TEXT = document.getElementById('newToDoText');
-    if (!NEW_TODO_TEXT.value) { return; }
-
-    toDos.push({
-      title: NEW_TODO_TEXT.value,
-      complete: false
-    });
-
-    NEW_TODO_TEXT.value = '';
-
-    renderTheUI();
-  }
-
-  ADD_TODO_FORM.addEventListener('submit', event => {
-    event.preventDefault();
-    createNewToDo();
+    newLi.textContent = title;
+    newLi.appendChild(checkbox);
+    newLi.appendChild(deleteBtn);
+    TODO_LIST.appendChild(newLi);
+    NEW_TODO_TEXT.value = "";
   });
-
-  renderTheUI();
-}
+};
 
 window.onload = function() {
   onReady();
