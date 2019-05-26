@@ -13,6 +13,19 @@ function onReady() {
       const CHECKBOX = document.createElement('input');
       CHECKBOX.type = "checkbox";
 
+      let deleteBtn = document.createElement('button');
+      deleteBtn.textContent = "Delete";
+
+      deleteBtn.addEventListener('click', function(event){
+
+      TODO_LIST.removeChild(this.parentElement);
+
+      toDos.forEach(function(currentToDo, index){
+        console.log(currentToDo, index);
+        console.log(this);
+      });
+    })
+
       NEW_LI.textContent = toDo.title;
 
       TODO_LIST.appendChild(NEW_LI);
